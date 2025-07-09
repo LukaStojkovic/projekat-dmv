@@ -57,15 +57,127 @@ export async function getDevices(req, res) {
 
     res.status(200).json(devices);
   } catch (err) {
-    console.log("Get Devices Error:", err);
+    console.log("Error in deviceController:", err);
     res.status(500).json({ status: "failed", message: err.message });
   }
 }
 
-export function updateDevice() {
-  console.log("update device");
+export async function updateDevice(req, res) {
+  const { id } = req.params;
+  const { name, location, type } = req.body;
+
+  if (!id) {
+    return res
+      .status(400)
+      .json({ status: "failed", message: "Invalid device ID" });
+  }
+
+  if (!name || !type || !location) {
+    return res
+      .status(400)
+      .json({ status: "failed", message: "All fields are required" });
+  }
+  try {
+    const deviceId = parseInt(id);
+
+    const relation = await prisma.userDevice.findUnique({
+      where: {
+        userId_deviceId: {
+          userId: req.user.id,
+          deviceId,
+        },
+      },
+    });
+
+    if (!relation) {
+      return res.status(403).json({
+        status: "failed",
+        message: "You do not have permission to update this device",
+      });
+    }
+
+    const isExistingName = await prisma.device.findUnique({
+      where: { name },
+    });
+
+    if (isExistingName && isExistingName.id !== deviceId) {
+      return res.status(400).json({
+        status: "failed",
+        message: "Device name is already in use",
+      });
+    }
+
+    const updatedDevice = await prisma.device.update({
+      where: { id: deviceId },
+      data: {
+        name,
+        type,
+        location,
+      },
+    });
+
+    res.status(200).json({
+      status: "success",
+      device: updatedDevice,
+    });
+  } catch (err) {
+    console.error("Error in deviceController:", err);
+    res.status(500).json({ status: "failed", message: err.message });
+  }
 }
 
-export function deleteDevice() {
-  console.log("delete device");
+export async function deleteDevice(req, res) {
+  const { id } = req.params;
+
+  if (!id) {
+    return res
+      .status(400)
+      .json({ status: "failed", message: "Invalid device ID" });
+  }
+
+  try {
+    const relation = await prisma.userDevice.findUnique({
+      where: {
+        userId_deviceId: {
+          userId: req.user.id,
+          deviceId: parseInt(id),
+        },
+      },
+    });
+
+    if (!relation) {
+      return res.status(403).json({
+        status: "failed",
+        message: "You do not have permission to delete this device",
+      });
+    }
+
+    await prisma.userDevice.delete({
+      where: {
+        userId_deviceId: {
+          userId: req.user.id,
+          deviceId: parseInt(id),
+        },
+      },
+    });
+
+    const remainingLinks = await prisma.userDevice.findMany({
+      where: { deviceId: parseInt(id) },
+    });
+
+    if (remainingLinks.length === 0) {
+      await prisma.device.delete({
+        where: { id: parseInt(id) },
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Device deleted",
+      deviceId: id,
+    });
+  } catch (err) {
+    console.error("Error in deviceController:", err);
+    res.status(500).json({ status: "failed", message: err.message });
+  }
 }
