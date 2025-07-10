@@ -5,6 +5,16 @@ import HomePage from "./pages/HomePage";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -17,7 +27,8 @@ function App() {
     return <Loader className="animate-spin size-10" />;
 
   return (
-    <div>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <Routes>
         <Route
           path="/"
@@ -32,7 +43,7 @@ function App() {
           element={!authUser ? <RegisterPage /> : <Navigate to="/" />}
         />
       </Routes>
-    </div>
+    </QueryClientProvider>
   );
 }
 
