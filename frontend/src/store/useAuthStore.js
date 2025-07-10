@@ -1,4 +1,5 @@
 import { axiosInstance } from "@/lib/axios";
+import { toast } from "sonner";
 import { create } from "zustand";
 
 export const useAuthStore = create((set) => ({
@@ -28,8 +29,9 @@ export const useAuthStore = create((set) => ({
       const res = await axiosInstance.post("/auth/register", userData);
 
       set({ authUser: res.data });
+      toast.success("You created account successfully");
     } catch (err) {
-      console.log(err.response.data.message);
+      toast.error(err.response.data.message);
     } finally {
       set({ isSigningUp: false });
     }
@@ -39,9 +41,9 @@ export const useAuthStore = create((set) => ({
     try {
       await axiosInstance.post("/auth/logout");
       set({ authUser: null });
-      // TOAST MORA OVDE
+      toast.success("You logged out successfully");
     } catch (err) {
-      console.log(err.response.data.message);
+      toast.error(err.response.data.message);
     }
   },
 
@@ -51,8 +53,10 @@ export const useAuthStore = create((set) => ({
       const res = await axiosInstance.post("/auth/login", userData);
 
       set({ authUser: res.data });
+      toast.success("You logged in successfully");
     } catch (err) {
       console.log(err.response.data.message);
+      toast.error(err.response.data.message);
     } finally {
       set({ isLoggingIn: false });
     }

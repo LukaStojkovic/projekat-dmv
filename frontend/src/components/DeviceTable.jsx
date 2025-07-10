@@ -15,6 +15,7 @@ import { ArrowLeft, ArrowRight, Loader2, Trash2 } from "lucide-react";
 import AddDevice from "./AddDevice";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function DeviceTable() {
   const queryClient = useQueryClient();
@@ -81,7 +82,12 @@ export default function DeviceTable() {
                   {device?.batteryStatus}
                 </TableCell>
                 <TableCell className="text-center">
-                  <button onClick={() => deleteDevice(device.id)}>
+                  <button
+                    onClick={() => {
+                      deleteDevice(device.id);
+                      toast.error(`You deleted device '${device.name}'`);
+                    }}
+                  >
                     <Trash2 className="size-4 text-red-500 cursor-pointer hover:text-red-700" />
                   </button>
                 </TableCell>

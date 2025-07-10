@@ -30,7 +30,8 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center flex-col items-center min-h-screen bg-gray-100">
+      <img src="dmv-logo.png" className="w-24 h-24" />
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-center text-xl">Login</CardTitle>
@@ -46,7 +47,7 @@ const LoginPage = () => {
                 <Input
                   id="username"
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Petar Petrovic"
                   {...register("username", {
                     required: "Username is required",
                   })}

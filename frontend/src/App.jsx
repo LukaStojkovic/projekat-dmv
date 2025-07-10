@@ -4,9 +4,10 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Spinner from "./components/Spinner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,8 +24,7 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  if (isCheckingAuth && !authUser)
-    return <Loader className="animate-spin size-10" />;
+  if (isCheckingAuth && !authUser) return <Spinner />;
 
   return (
     <QueryClientProvider client={queryClient}>

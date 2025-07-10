@@ -27,7 +27,8 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
+      <img src="dmv-logo.png" className="w-24 h-24" />
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-center text-xl">Register</CardTitle>
@@ -43,7 +44,7 @@ export default function RegisterPage() {
                 <Input
                   id="username"
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Petar Petrovic"
                   {...register("username", {
                     required: "Username is required",
                   })}

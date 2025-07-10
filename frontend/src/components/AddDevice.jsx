@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { addDevice } from "@/services/apiDevice";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function AddDevice() {
   const queryClient = useQueryClient();
@@ -31,6 +32,7 @@ export default function AddDevice() {
     try {
       await addDevice(data);
       await queryClient.invalidateQueries({ queryKey: ["devices"] });
+      toast.success(`You created device '${data.name}'`);
       reset();
       setIsOpenModal(false);
     } catch (err) {
