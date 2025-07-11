@@ -4,6 +4,7 @@ import {
   addDevice,
   deleteDevice,
   getDevices,
+  getDeviceStats,
   updateDevice,
 } from "../controllers/deviceController.js";
 
@@ -15,5 +16,6 @@ router.get("/", protectRoute, getDevices);
 router.post("/", protectRoute, addDevice);
 router.put("/:id", protectRoute, updateDevice);
 router.delete("/:id", protectRoute, deleteDevice);
+router.get("/get-device-stats", protectRoute, getDeviceStats);
 
 export default router;

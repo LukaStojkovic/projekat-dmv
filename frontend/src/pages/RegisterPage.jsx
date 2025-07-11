@@ -47,6 +47,15 @@ export default function RegisterPage() {
                   placeholder="Petar Petrovic"
                   {...register("username", {
                     required: "Username is required",
+                    maxLength: {
+                      value: 30,
+                      message:
+                        "Username cannot contain more than 30 characters",
+                    },
+                    min: {
+                      value: 6,
+                      message: "Username must have at least 6 characters",
+                    },
                   })}
                 />
                 {errors.username && (
@@ -65,6 +74,15 @@ export default function RegisterPage() {
                   placeholder="**********"
                   {...register("password", {
                     required: "Password is required",
+                    maxLength: {
+                      value: 30,
+                      message:
+                        "Password cannot contain more than 30 characters",
+                    },
+                    min: {
+                      value: 3,
+                      message: "Password must have at least 3 characters",
+                    },
                   })}
                 />
                 {errors.password && (

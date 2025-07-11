@@ -41,21 +41,43 @@ export async function addDevice(req, res) {
 }
 
 export async function getDevices(req, res) {
+  const page = parseInt(req.query.page) || 1;
+  const perPage = 10;
+  const skip = (page - 1) * perPage;
+
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user.id },
+    const totalDevices = await prisma.userDevice.count({
+      where: { userId: req.user.id },
+    });
+
+    const userDevices = await prisma.userDevice.findMany({
+      where: {
+        userId: req.user.id,
+      },
       include: {
-        devices: {
-          include: {
-            device: true,
-          },
-        },
+        device: true,
+      },
+      skip,
+      take: perPage,
+      orderBy: {
+        deviceId: "desc",
       },
     });
 
-    const devices = user.devices.map((d) => d.device);
+    console.log(userDevices);
 
-    res.status(200).json(devices);
+    const devices = userDevices.map((d) => d.device);
+
+    res.status(200).json({
+      message: "success",
+      data: {
+        page,
+        perPage,
+        total: totalDevices,
+        totalPages: Math.ceil(totalDevices / perPage),
+        devices,
+      },
+    });
   } catch (err) {
     console.log("Error in deviceController:", err);
     res.status(500).json({ status: "failed", message: err.message });
@@ -178,6 +200,31 @@ export async function deleteDevice(req, res) {
     });
   } catch (err) {
     console.error("Error in deviceController:", err);
+    res.status(500).json({ status: "failed", message: err.message });
+  }
+}
+
+export async function getDeviceStats(req, res) {
+  try {
+    const userDevices = await prisma.userDevice.findMany({
+      where: { userId: req.user.id },
+      include: { device: true },
+    });
+
+    const counts = {};
+
+    userDevices.forEach(({ device }) => {
+      counts[device.type] = (counts[device.type] || 0) + 1;
+    });
+
+    const result = Object.entries(counts).map(([type, count]) => ({
+      type,
+      count,
+    }));
+
+    res.status(200).json({ message: "success", data: result });
+  } catch (err) {
+    console.error("Error in getDeviceStats:", err);
     res.status(500).json({ status: "failed", message: err.message });
   }
 }
