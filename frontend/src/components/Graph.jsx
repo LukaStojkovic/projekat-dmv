@@ -9,8 +9,13 @@ import {
 } from "recharts";
 import { getDevicesStats } from "@/services/apiDevice";
 import Spinner from "./Spinner";
+import { Button } from "./ui/button";
+// import useGetDevices from "@/hooks/useGetDevices";
+import { handleExportAllCSV } from "@/lib/utils";
 
 export default function Graph() {
+  //   const { devices, isLoading: isLoadingDevices } = useGetDevices();
+
   const { data, isLoading } = useQuery({
     queryKey: ["deviceStats"],
     queryFn: getDevicesStats,
@@ -46,6 +51,13 @@ export default function Graph() {
           </ResponsiveContainer>
         </div>
       </div>
+      <Button
+        variant="outline"
+        onClick={handleExportAllCSV}
+        className={"flex items-center justify-center w-full"}
+      >
+        Export CSV
+      </Button>
     </div>
   );
 }

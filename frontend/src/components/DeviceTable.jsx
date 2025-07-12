@@ -18,16 +18,13 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useState } from "react";
 import EditButton from "./EditButton";
+import useGetDevices from "@/hooks/useGetDevices";
 
 export default function DeviceTable() {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
 
-  const { data: devices, isLoading } = useQuery({
-    queryFn: () => getDevice(page),
-    queryKey: ["devices", page],
-    keepPreviousData: true,
-  });
+  const { devices, isLoading } = useGetDevices(page);
 
   const { mutate: deleteDevice } = useMutation({
     mutationFn: (deviceId) => deleteDeviceFn(deviceId),

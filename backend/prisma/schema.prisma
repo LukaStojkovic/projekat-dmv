@@ -23,7 +23,7 @@ model User {
 model Device {
   id               Int          @id @default(autoincrement())
   name             String       @unique @db.VarChar(30)
-  type             String       @db.VarChar(20)
+  type             String       @db.VarChar(20) 
   location         String       @db.VarChar(20)
   connectionStatus String
   batteryStatus    Int
