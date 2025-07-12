@@ -19,11 +19,12 @@ import { toast } from "sonner";
 import { useState } from "react";
 import EditButton from "./EditButton";
 import useGetDevices from "@/hooks/useGetDevices";
+import { useNavigate } from "react-router-dom";
 
 export default function DeviceTable() {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
-
+  const navigate = useNavigate();
   const { devices, isLoading } = useGetDevices(page);
 
   const { mutate: deleteDevice } = useMutation({
@@ -39,7 +40,7 @@ export default function DeviceTable() {
     <div className="w-full flex justify-center">
       <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md space-y-4">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-semibold">Devices</h2>
+          <h2 className="text-lg font-semibold">Devices Table</h2>
           <AddDevice />
         </div>
         <div className="min-h-[420px]">
@@ -66,7 +67,12 @@ export default function DeviceTable() {
               ) : (
                 devices?.data?.devices.map((device) => (
                   <TableRow key={device.id} className="cursor-pointer">
-                    <TableCell>{device?.name}</TableCell>
+                    <TableCell
+                      className="hover:underline text-gray-600"
+                      onClick={() => navigate(`/device/${device.id}`)}
+                    >
+                      {device?.name}
+                    </TableCell>
                     <TableCell>{device?.type}</TableCell>
                     <TableCell>{device?.location}</TableCell>
                     <TableCell

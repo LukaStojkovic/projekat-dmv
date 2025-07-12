@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Spinner from "./components/Spinner";
+import BatteryGraph from "./components/BatteryGraph";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,7 @@ function App() {
           path="/register"
           element={!authUser ? <RegisterPage /> : <Navigate to="/" />}
         />
+        <Route path="/device/:id" element={<BatteryGraph />} />
       </Routes>
     </QueryClientProvider>
   );

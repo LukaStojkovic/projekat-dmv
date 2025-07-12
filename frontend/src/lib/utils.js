@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { unparse } from "papaparse";
 import { toast } from "sonner";
-import { getDevice } from "@/services/apiDevice";
+import { getAllDevicesFromUser, getDevice } from "@/services/apiDevice";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -10,8 +10,8 @@ export function cn(...inputs) {
 
 export const handleExportAllCSV = async () => {
   try {
-    const res = await getDevice();
-    const allDevices = res.data.devices;
+    const res = await getAllDevicesFromUser();
+    const allDevices = res.data;
 
     if (!allDevices.length) {
       toast.warning("No devices found to export.");
@@ -28,7 +28,10 @@ export const handleExportAllCSV = async () => {
       }))
     );
 
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob(["\uFEFF" + csv], {
+      type: "text/csv;charset=utf-8;",
+    });
+
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement("a");

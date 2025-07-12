@@ -204,6 +204,24 @@ export async function deleteDevice(req, res) {
   }
 }
 
+export async function getAllDevicesFromUser(req, res) {
+  try {
+    const userDevices = await prisma.userDevice.findMany({
+      where: { userId: req.user.id },
+      include: { device: true },
+    });
+
+    const result = userDevices.map((d) => d.device);
+
+    console.log("All devices for user:", result);
+
+    res.status(200).json({ message: "success", data: result });
+  } catch (err) {
+    console.error("Error in getDeviceStats:", err);
+    res.status(500).json({ status: "failed", message: err.message });
+  }
+}
+
 export async function getDeviceStats(req, res) {
   try {
     const userDevices = await prisma.userDevice.findMany({
@@ -226,5 +244,21 @@ export async function getDeviceStats(req, res) {
   } catch (err) {
     console.error("Error in getDeviceStats:", err);
     res.status(500).json({ status: "failed", message: err.message });
+  }
+}
+
+export async function getBatteryFluctuation(req, res) {
+  try {
+    const batteryData = Array.from({ length: 24 }, (_, hour) => ({
+      hour,
+      value: Math.floor(Math.random() * 101),
+    }));
+
+    res.status(200).json({ message: "success", data: batteryData });
+  } catch (err) {
+    console.error("Error in getBatteryFluctuation:", err);
+    res
+      .status(500)
+      .json({ status: "failed", message: "Internal server error" });
   }
 }

@@ -26,7 +26,11 @@ export default function EditButton({ device }) {
 
   return (
     <>
-      <button onClick={() => setIsOpenModal((open) => !open)}>
+      <button
+        onClick={() => {
+          setIsOpenModal((open) => !open);
+        }}
+      >
         <Edit className="size-4 text-gray-500 cursor-pointer hover:text-gray-700" />
       </button>
 
@@ -42,7 +46,10 @@ export default function EditButton({ device }) {
             handleSubmitForm={handleSaveChanges}
             submitLabel="Save Changes"
             defaultValues={device}
-            onCancel={() => setIsOpenModal(false)}
+            onCancel={(e) => {
+              e.stopPropagation();
+              setIsOpenModal(false);
+            }}
           />
         </DialogContent>
       </Dialog>

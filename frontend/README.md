@@ -1,12 +1,68 @@
-# React + Vite
+# DMV Projekat (Luka Stojkovic)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplikacija za praćenje i upravljanje uređajima (radari, semafori, senzori itd.), kreirana kao testni projekat za poziciju web developera.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📦 Tehnologije
 
-## Expanding the ESLint configuration
+- **Frontend:** React + Vite, Tailwind CSS, Zustand, React Query, Recharts, Shadcn, Lucide React, Papaparse, React-Router-dom, React-hook-form, Sonner
+- **Backend:** Node.js, Express, Prisma (ORM), cors, dotenv, jsonwebtoken, bcrypt, cookie-parser
+- **Baza:** MySQL
+- **Autentifikacija:** JWT + cookies
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ⚙️ Instalacija i pokretanje
+
+### 1. Kloniraj projekat
+
+```bash
+git clone https://github.com/LukaStojkovic/projekat-dmv.git
+cd projekat-dmv
+
+cd ./backend/
+npm i
+
+```
+
+### 2. Kreiraj .env file
+
+```bash
+
+
+PORT=8000
+JWT_SECRET=your_super_secret_jwt_key
+DATABASE_URL=mysql://user:password@localhost:3306/ime_baze
+
+```
+
+### 3. Pokreni prisma migraciju
+
+```bash
+
+npx prisma migrate dev --name init
+
+```
+
+### 4. Pokreni seed za podatke
+
+```bash
+node ./libs/seed.js
+
+```
+
+### 5. Pokreni server
+
+```bash
+npm run dev
+
+```
+
+### 6. Frontend pokretanje
+
+```bash
+cd ../frontend
+npm i
+npm run dev
+```

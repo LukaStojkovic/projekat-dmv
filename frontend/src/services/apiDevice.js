@@ -63,3 +63,25 @@ export async function getDevicesStats() {
     console.log("Error in getDevicesStats", err.response.data.message);
   }
 }
+
+export async function getAllDevicesFromUser() {
+  try {
+    const res = await axiosInstance.get(`/devices/get-all-devices`);
+
+    return res.data;
+  } catch (err) {
+    toast.error(err.response.data.message);
+    console.log("Error in getAllDevicesFromUser", err.response.data.message);
+  }
+}
+
+export async function getBatteryFluctuation(deviceId) {
+  try {
+    const res = await axiosInstance.get(`/devices/${deviceId}/battery`);
+
+    return res.data;
+  } catch (err) {
+    toast.error(err.response.data.message);
+    console.log("Error in getBatteryFluctuation", err.response.data.message);
+  }
+}
