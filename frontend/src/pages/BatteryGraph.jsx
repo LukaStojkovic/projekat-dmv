@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
-import Spinner from "./Spinner";
+import Spinner from "../components/Spinner";
 import {
   Line,
   LineChart,

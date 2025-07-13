@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Spinner from "./components/Spinner";
-import BatteryGraph from "./components/BatteryGraph";
+import BatteryGraph from "./pages/BatteryGraph";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
