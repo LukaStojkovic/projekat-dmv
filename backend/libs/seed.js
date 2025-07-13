@@ -19,14 +19,14 @@ function randomBattery() {
 }
 
 async function main() {
-  //   await prisma.userDevice.deleteMany();
-  //   await prisma.device.deleteMany();
-  //   await prisma.user.deleteMany();
+  await prisma.userDevice.deleteMany();
+  await prisma.device.deleteMany();
+  await prisma.user.deleteMany();
 
   const password = await bcrypt.hash("123456", 12);
   const users = [];
 
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 30; i++) {
     const user = await prisma.user.create({
       data: {
         username: `user${i}`,
@@ -38,7 +38,7 @@ async function main() {
 
   const devices = [];
 
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 1; i <= 200; i++) {
     const device = await prisma.device.create({
       data: {
         name: `Device ${i}`,
