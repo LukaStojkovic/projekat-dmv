@@ -7,18 +7,15 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { getDevicesStats } from "@/services/apiDevice";
 import Spinner from "./Spinner";
 import { Button } from "./ui/button";
 import { handleExportAllCSV } from "@/lib/utils";
+import useDeviceStats from "@/hooks/useDeviceStats";
 
 export default function Graph() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["deviceStats"],
-    queryFn: getDevicesStats,
-  });
+  const { getDeviceStats, isLoadingStats } = useDeviceStats();
 
-  if (isLoading) return <Spinner />;
+  if (isLoadingStats) return <Spinner />;
 
   return (
     <div className="w-full max-w-xl mx-auto bg-white p-6 rounded-xl shadow-md">
@@ -26,13 +23,13 @@ export default function Graph() {
         Devices Graph
       </h2>
 
-      {data?.data?.length > 0 ? (
+      {getDeviceStats?.data?.length > 0 ? (
         <>
           <div className="w-full overflow-x-auto flex justify-center">
             <div className="min-w-[400px] h-[350px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={data.data}
+                  data={getDeviceStats.data}
                   barSize={40}
                   margin={{ top: 20, right: 30, left: 10, bottom: 5 }}
                 >

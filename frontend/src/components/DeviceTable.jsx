@@ -6,35 +6,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  deleteDevice as deleteDeviceFn,
-  getDevice,
-} from "@/services/apiDevice";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, ArrowRight, Loader2, Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import AddDevice from "./AddDevice";
-import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useState } from "react";
 import EditButton from "./EditButton";
 import useGetDevices from "@/hooks/useGetDevices";
 import { useNavigate } from "react-router-dom";
+import Pagination from "./Pagination";
+import useDeleteDevice from "@/hooks/useDeleteDevice";
+import Spinner from "./Spinner";
 
 export default function DeviceTable() {
-  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const { devices, isLoading } = useGetDevices(page);
+  const { deleteDevice, isDeletingDevice } = useDeleteDevice();
 
-  const { mutate: deleteDevice } = useMutation({
-    mutationFn: (deviceId) => deleteDeviceFn(deviceId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["devices"]);
-    },
-  });
-
-  if (isLoading) return <Loader2 className="animate-spin" />;
+  if (isLoading || isDeletingDevice) return <Spinner />;
 
   return (
     <div className="w-full flex justify-center">
@@ -66,9 +56,9 @@ export default function DeviceTable() {
                 </TableRow>
               ) : (
                 devices?.data?.devices.map((device) => (
-                  <TableRow key={device.id} className="cursor-pointer">
+                  <TableRow key={device.id}>
                     <TableCell
-                      className="hover:underline text-gray-600"
+                      className="hover:underline cursor-pointer text-gray-600"
                       onClick={() => navigate(`/device/${device.id}`)}
                     >
                       {device?.name}
@@ -108,27 +98,12 @@ export default function DeviceTable() {
           </Table>
         </div>
 
-        <div className="flex justify-between items-center pt-4">
-          <Button
-            variant="outline"
-            onClick={() => setPage((p) => Math.max(p - 1, 1))}
-            disabled={page === 1 || isLoading}
-          >
-            <ArrowLeft />
-          </Button>
-          <p className="text-sm text-gray-600">
-            {page} / {devices?.data?.totalPages || 1}
-          </p>
-          <Button
-            variant="outline"
-            onClick={() =>
-              setPage((p) => (p < devices.data.totalPages ? p + 1 : p))
-            }
-            disabled={page >= devices.data.totalPages}
-          >
-            <ArrowRight />
-          </Button>
-        </div>
+        <Pagination
+          setPage={setPage}
+          page={page}
+          devices={devices}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

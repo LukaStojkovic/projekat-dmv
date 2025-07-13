@@ -1,8 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getBatteryFluctuation } from "@/services/apiDevice";
 import Spinner from "./Spinner";
 import {
   Line,
@@ -12,17 +10,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import useBatteryData from "@/hooks/useBatteryData";
 
 export default function BatteryGraph() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data: batteryData, isLoading } = useQuery({
-    queryKey: ["batteryData", id],
-    queryFn: () => getBatteryFluctuation(id),
-  });
+  const { batteryData, isLoadingBatteryData } = useBatteryData(id);
 
-  if (isLoading) return <Spinner />;
+  if (isLoadingBatteryData) return <Spinner />;
 
   return (
     <div className="min-h-screen w-full justify-center px-4 py-8 bg-gray-50 flex flex-col items-center">
