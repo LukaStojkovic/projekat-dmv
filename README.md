@@ -25,7 +25,9 @@ cd ./backend/
 npm i
 
 ```
+
 ### 2. Kreiraj .env file
+
 ```bash
 
 
@@ -34,27 +36,34 @@ JWT_SECRET=your_super_secret_jwt_key
 DATABASE_URL=mysql://user:password@localhost:3306/ime_baze
 
 ```
+
 ### 3. Pokreni prisma migraciju
+
 ```bash
 
 npx prisma migrate dev --name init
 
 ```
 
-
 ### 4. Pokreni seed za podatke
-```bash 
+
+```bash
 node ./libs/seed.js
+
+Username: user1, user2, user3 etc...
+Password: 123456 (za svaki account)
 
 ```
 
 ### 5. Pokreni server
+
 ```bash
 npm run dev
 
 ```
 
 ### 6. Frontend pokretanje
+
 ```bash
 cd ../frontend
 npm i
