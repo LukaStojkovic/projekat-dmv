@@ -1,3 +1,4 @@
+import AuthForm from "@/components/AuthForm";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,14 +17,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuthStore();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
   function onSubmit(formData) {
     login(formData);
@@ -40,62 +34,7 @@ const LoginPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="Petar Petrovic"
-                  {...register("username", {
-                    required: "Username is required",
-                  })}
-                />
-                {errors.username && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.username.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="**********"
-                    {...register("password", {
-                      required: "Password is required",
-                    })}
-                  />
-
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400" />
-                    )}
-                  </button>
-                </div>
-                {errors.password && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
-            </div>
-          </form>
+          <AuthForm onSubmit={onSubmit} buttonLabel="Login" />
         </CardContent>
         <CardFooter className="flex-col">
           <Link

@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Loader2, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import AddDevice from "./AddDevice";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -24,10 +24,13 @@ export default function DeviceTable() {
   const { devices, isLoading } = useGetDevices(page);
   const { deleteDevice, isDeletingDevice } = useDeleteDevice();
 
-  if (isLoading || isDeletingDevice) return <Spinner />;
-
   return (
     <div className="w-full flex justify-center">
+      {isLoading && (
+        <div className="absolute inset-0 z-10 bg-white/70 flex items-center justify-center rounded-md">
+          <Spinner />
+        </div>
+      )}
       <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md space-y-4">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-semibold">Devices Table</h2>
@@ -58,16 +61,18 @@ export default function DeviceTable() {
                 devices?.data?.devices.map((device) => (
                   <TableRow key={device.id}>
                     <TableCell
-                      className="hover:underline cursor-pointer text-gray-600"
+                      className="hover:underline cursor-pointer text-gray-700"
                       onClick={() => navigate(`/device/${device.id}`)}
                     >
-                      {device?.name}
+                      <span className="flex items-center gap-1 group-hover:underline underline-offset-2">
+                        {device?.name}
+                      </span>
                     </TableCell>
                     <TableCell>{device?.type}</TableCell>
                     <TableCell>{device?.location}</TableCell>
                     <TableCell
                       className={cn(
-                        `text-center`,
+                        "text-center text-sm font-medium",
                         device?.connectionStatus === "offline"
                           ? "text-red-500"
                           : "text-green-500"
@@ -85,8 +90,13 @@ export default function DeviceTable() {
                             deleteDevice(device.id);
                             toast.error(`You deleted device '${device.name}'`);
                           }}
+                          disabled={isDeletingDevice}
                         >
-                          <Trash2 className="size-4 text-red-500 cursor-pointer hover:text-red-700" />
+                          {!isDeletingDevice ? (
+                            <Trash2 className="size-4 text-red-500 cursor-pointer hover:text-red-700" />
+                          ) : (
+                            <Spinner />
+                          )}
                         </button>
                         <EditButton device={device} />
                       </div>

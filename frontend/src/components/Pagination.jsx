@@ -19,7 +19,7 @@ export default function Pagination({ setPage, page, devices, isLoading }) {
         onClick={() =>
           setPage((p) => (p < devices.data.totalPages ? p + 1 : p))
         }
-        disabled={page >= devices.data.totalPages}
+        disabled={page >= devices?.data.totalPages}
       >
         <ArrowRight />
       </Button>

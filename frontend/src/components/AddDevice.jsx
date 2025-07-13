@@ -31,7 +31,7 @@ export default function AddDevice() {
   return (
     <Dialog open={isOpenModal} onOpenChange={setIsOpenModal}>
       <DialogTrigger asChild>
-        <Button>
+        <Button variant={"primary"}>
           <Plus />
           Add Device
         </Button>

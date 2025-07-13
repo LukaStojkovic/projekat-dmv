@@ -4,11 +4,11 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Spinner from "./components/Spinner";
 import BatteryGraph from "./components/BatteryGraph";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,7 +43,11 @@ function App() {
           path="/register"
           element={!authUser ? <RegisterPage /> : <Navigate to="/" />}
         />
-        <Route path="/device/:id" element={<BatteryGraph />} />
+        <Route
+          path="/device/:id"
+          element={authUser ? <BatteryGraph /> : <Navigate to="/login" />}
+        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>
   );

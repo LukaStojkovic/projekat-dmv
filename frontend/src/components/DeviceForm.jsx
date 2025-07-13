@@ -117,7 +117,9 @@ export default function DeviceForm({
             Cancel
           </Button>
         </DialogClose>
-        <Button type="submit">{submitLabel}</Button>
+        <Button type="submit" variant={"primary"}>
+          {submitLabel}
+        </Button>
       </DialogFooter>
     </form>
   );

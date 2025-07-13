@@ -46,8 +46,7 @@ export default function EditButton({ device }) {
             handleSubmitForm={handleSaveChanges}
             submitLabel="Save Changes"
             defaultValues={device}
-            onCancel={(e) => {
-              e.stopPropagation();
+            onCancel={() => {
               setIsOpenModal(false);
             }}
           />

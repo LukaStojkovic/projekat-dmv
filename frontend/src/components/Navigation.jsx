@@ -12,14 +12,14 @@ export default function Navigation({ onChange }) {
   return (
     <div className=" bg-white p-1 rounded-lg shadow-md flex items-center justify-center gap-2">
       <Button
-        variant={active === "devices" ? "default" : "ghost"}
+        variant={active === "devices" ? "primary" : "ghost"}
         onClick={() => handleClick("devices")}
         className="px-4"
       >
         Devices
       </Button>
       <Button
-        variant={active === "graph" ? "default" : "ghost"}
+        variant={active === "graph" ? "primary" : "ghost"}
         onClick={() => handleClick("graph")}
         className="px-4"
       >
